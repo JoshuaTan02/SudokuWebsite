@@ -2,13 +2,43 @@
     margin-top: 100px;
 
 }
+body{
+    background-color:rgb(217, 226, 255);
 
+}
+.main{
+    background-color:rgb(227, 234, 255);
+}
 
+.row3,.row6{
+    border-top:2px solid blue;
+    
+    
+}
+.row{
+    max-width: 600px;
+    justify-content: center;
+    text-align: center;
+}
+.column2,.column5{
+    border-right:2px solid blue;
+}
+
+.box-row{
+    min-width: 450px;
+}
 .col-1{
-    max-width: 40px;
-    background-color: aliceblue;
+    max-width: 50px;
+    height: 50px;
+    padding: 0;
+    max-height: 50px;
+    font-size: 30px;
+    background-color: white;
+    text-align: center;
+    margin: 1px;
+    color: black;
 }
 
 .board{
-    margin-top: 50px;
+
 }
