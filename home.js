@@ -4,7 +4,8 @@ import {boards} from "./data.js";
 var btn = document.getElementById("VisualButton");
 var newboardBtn = document.getElementById("NewBoard");
 var box = document.getElementById("0x1");
-
+let boardNumber = Math.floor(Math.random() * boards.length);
+let board = boards[boardNumber]
 btn.onclick= function(){
     solvePuzzle()
 }
@@ -41,7 +42,8 @@ function updateBoard(board){
 
 }
 function newBoard(){
-
+    boardNumber = Math.floor(Math.random() * boards.length);
+    board = boards[boardNumber]
     updateBoard(board)
 }
 
@@ -68,9 +70,14 @@ function isValid(board,coordinate,number){
     var xBox = Math.floor(coordinate[1]/3)
     var yBox = Math.floor(coordinate[0]/3)
     for (var i = yBox*3; i <yBox*3+3; i ++){
-        for (var j = xBox*3; i <xBox*3+3; j ++){
-            if (board[i][j] === number && (i,j) != coordinate)
-            return false
+        for (var j = xBox*3; j <xBox*3+3; j ++){
+            if (board[i][j] === number && i != coordinate[0] && j!= coordinate[1]){
+                console.log(xBox  + " " + yBox)
+                console.log(number)
+                console.log(i + " " + j)
+                return false
+            }
+
             }   
     } 
     return true
@@ -86,6 +93,5 @@ function findSquare(board){
     } 
     return null
 }
-let boardNumber = Math.floor(Math.random() * boards.length);
-let board = boards[boardNumber]
+
 newBoard()
