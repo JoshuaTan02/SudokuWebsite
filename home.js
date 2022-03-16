@@ -45,7 +45,7 @@ function sleep(ms) {
 
         // changeColor(boxes[index],"red",i+"")
         // await sleep(250);
-
+        console.log("trying number " + i)
         if (isValid(board,[row,col],i +"")){
             // console.log("Trying number " + i + " at position: " +row + " "+(col))
             // changeColor(boxes[index],"green",i+"")
