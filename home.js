@@ -3,6 +3,7 @@ import {boards} from "./data.js";
 
 var btn = document.getElementById("VisualButton");
 var newboardBtn = document.getElementById("NewBoard");
+var instantBtn = document.getElementById("InstantButton");
 
 let board = boards[Math.floor(Math.random() * boards.length)]
 var boardElement = document.getElementsByClassName("board")[0];
@@ -10,26 +11,30 @@ var boxes = boardElement.getElementsByClassName("col-1")
 
 btn.onclick= function(){
     
-    solvePuzzle()
-
-    updateBoard(board)
+    solvePuzzle2(board)
 
 }
 newboardBtn.onclick= function(){
     newBoard()
+    // await solvePuzzle2(board)
+
+}
+
+instantBtn.onclick = function(){
+    console.log("clicked")
+    solvePuzzle(board)
+    // updateBoard(board)
 }
 
 function changeColor(object,color,text){
     // console.log("changed color")
     object.style.backgroundColor = color;
+    if(text !== "")
     object.textContent  = text
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
- }
 
- function solvePuzzle(){
+ function solvePuzzle(board){
     var square = findSquare(board)
     if (square == null){
         return true
@@ -39,42 +44,85 @@ function sleep(ms) {
         var col = square[1]
     }
         // now with an empty square, we will try every possible number
-    // var index = row*9  + col
+    var index = row*9  + col
 
     for (var i = 1; i < 10; i++ ){
 
-        // changeColor(boxes[index],"red",i+"")
-        // await sleep(250);
-        console.log("trying number " + i)
         if (isValid(board,[row,col],i +"")){
             // console.log("Trying number " + i + " at position: " +row + " "+(col))
-            // changeColor(boxes[index],"green",i+"")
-            // await sleep(250);
+            changeColor(boxes[index],"green",i+"")
 
             board[row][col] = i+""
             // changeColor(board)
-            // updateBoard(board)
 
-            if (solvePuzzle(board))
+            if ( solvePuzzle(board) )
                 return true
+
             board[row][col]  = 0+""
         }
     }
     return false
 
-    
+}
+
+var solvePuzzle2 = async (board) =>{
+    // console.log(board)
+    var square = findSquare(board)
+    if (square == null){
+        return true
+    }
+    else{
+        var row = square[0]
+        var col = square[1]
+    }
+        // now with an empty square, we will try every possible number
+    var index = row*9  + col
+
+    for (var i = 1; i < 10; i++ ){
+        changeColor(boxes[index],"red","")
+
+        // changeColor(boxes[index],"red",i+"")
+        // console.log("trying number " + i)
+        if (isValid(board,[row,col],i +"")){
+            // console.log("Trying number " + i + " at position: " +row + " "+(col))
+            changeColor(boxes[index],"green",i+"")
+
+            board[row][col] = i+""
+            // changeColor(board)
+            await sleep(50)
+            // console.log(solvePuzzle2(board))
+            var solved = await solvePuzzle2(board)
+            if ( solved )
+                return true
+
+                changeColor(boxes[index],"red","")
+                board[row][col]  = 0+""
+        }
+    }
+    return false
 
 }
 
+var sleep = async (seconds) =>{
+    return await new Promise ((resolve) => setTimeout(resolve,seconds))
+}
 
-
-function updateBoard(board){
+function updateBoard(board,color){
     boardElement = document.getElementsByClassName("board")[0];
     boxes = boardElement.getElementsByClassName("col-1")
     for (var i = 0; i< board.length; i++){
         for (var j = 0; j< board[0].length; j++){
                 let index = i*9  + j
+                if(board[i][j] === "0"){
                 boxes[index].style.backgroundColor = "white"
+                }
+                else{
+                    boxes[index].style.backgroundColor = "lightblue"
+
+                }
+                if (color != ""){
+                    boxes[index].style.backgroundColor = color
+                }
                 boxes[index].textContent = board[i][j]
 
             }   
@@ -83,7 +131,7 @@ function updateBoard(board){
 }
 function newBoard(){
     board = boards[Math.floor(Math.random() * boards.length)]
-    updateBoard(board)
+    updateBoard(board,"")
     // console.log(board)
 }
 
