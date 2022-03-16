@@ -3,34 +3,74 @@ import {boards} from "./data.js";
 
 var btn = document.getElementById("VisualButton");
 var newboardBtn = document.getElementById("NewBoard");
-var box = document.getElementById("0x1");
-let boardNumber = Math.floor(Math.random() * boards.length);
-let board = boards[boardNumber]
+
+let board = boards[Math.floor(Math.random() * boards.length)]
+var boardElement = document.getElementsByClassName("board")[0];
+var boxes = boardElement.getElementsByClassName("col-1")
+
 btn.onclick= function(){
+    
     solvePuzzle()
+
+    updateBoard(board)
+
 }
 newboardBtn.onclick= function(){
     newBoard()
 }
 
-function changeColor(object){
-    object.textContent="5";
-    object.style.backgroundColor = "red";
+function changeColor(object,color,text){
+    // console.log("changed color")
+    object.style.backgroundColor = color;
+    object.textContent  = text
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+ }
 
-function solvePuzzle(){
-    changeColor(box)
-    console.log(isValid(board,[1,1],'4'))
+ function solvePuzzle(){
+    var square = findSquare(board)
+    if (square == null){
+        return true
+    }
+    else{
+        var row = square[0]
+        var col = square[1]
+    }
+        // now with an empty square, we will try every possible number
+    // var index = row*9  + col
+
+    for (var i = 1; i < 10; i++ ){
+
+        // changeColor(boxes[index],"red",i+"")
+        // await sleep(250);
+
+        if (isValid(board,[row,col],i +"")){
+            // console.log("Trying number " + i + " at position: " +row + " "+(col))
+            // changeColor(boxes[index],"green",i+"")
+            // await sleep(250);
+
+            board[row][col] = i+""
+            // changeColor(board)
+            // updateBoard(board)
+
+            if (solvePuzzle(board))
+                return true
+            board[row][col]  = 0+""
+        }
+    }
+    return false
+
+    
 
 }
 
 
 
 function updateBoard(board){
-    var boardElement = document.getElementsByClassName("board")[0];
-    var boxes = boardElement.getElementsByClassName("col-1")
-
+    boardElement = document.getElementsByClassName("board")[0];
+    boxes = boardElement.getElementsByClassName("col-1")
     for (var i = 0; i< board.length; i++){
         for (var j = 0; j< board[0].length; j++){
                 let index = i*9  + j
@@ -42,9 +82,9 @@ function updateBoard(board){
 
 }
 function newBoard(){
-    boardNumber = Math.floor(Math.random() * boards.length);
-    board = boards[boardNumber]
+    board = boards[Math.floor(Math.random() * boards.length)]
     updateBoard(board)
+    // console.log(board)
 }
 
 
@@ -54,6 +94,7 @@ function newBoard(){
 
 function isValid(board,coordinate,number){
     //check the row 
+    
     for (var j = 0; j< board[0].length; j++){
         if (board[coordinate[0]][j] === number && coordinate[1] != j)
             return false;   
@@ -72,20 +113,17 @@ function isValid(board,coordinate,number){
     for (var i = yBox*3; i <yBox*3+3; i ++){
         for (var j = xBox*3; j <xBox*3+3; j ++){
             if (board[i][j] === number && i != coordinate[0] && j!= coordinate[1]){
-                console.log(xBox  + " " + yBox)
-                console.log(number)
-                console.log(i + " " + j)
                 return false
             }
-
-            }   
+        }   
     } 
+
     return true
 }
 
 function findSquare(board){
     for (var row = 0; row < board.length; row++){
-        for (col= 0; col < board[0].length; col++){
+        for (var col= 0; col < board[0].length; col++){
             if (board[row][col] === '0')
             return [row,col]
 
@@ -94,4 +132,3 @@ function findSquare(board){
     return null
 }
 
-newBoard()
