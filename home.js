@@ -135,7 +135,7 @@ function newBoard(){
     // console.log(board)
 }
 
-
+ 
 
 
 // Starting to do the backtracking now 
