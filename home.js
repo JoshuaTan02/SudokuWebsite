@@ -4,11 +4,21 @@ import {boards} from "./data.js";
 var btn = document.getElementById("VisualButton");
 var newboardBtn = document.getElementById("NewBoard");
 var instantBtn = document.getElementById("InstantButton");
+var RefreshButton = document.getElementById("RefreshButton");
 
 let board = boards[Math.floor(Math.random() * boards.length)]
 var boardElement = document.getElementsByClassName("board")[0];
 var boxes = boardElement.getElementsByClassName("col-1")
+var slider = document.getElementById("myRange");
+var output = document.getElementById("speed");
+var speed = slider.value
+output.innerHTML = "Speed: " +speed; // Display the default slider value
 
+// Update the current slider value (each time you drag the slider handle)
+slider.oninput = function() {
+  output.innerHTML = "Speed: "+ this.value;
+  speed = this.value
+} 
 btn.onclick= function(){
     
     solvePuzzle2(board)
@@ -19,9 +29,12 @@ newboardBtn.onclick= function(){
     // await solvePuzzle2(board)
 
 }
+RefreshButton.onclick= function(){
+    window.location.reload();
+
+}
 
 instantBtn.onclick = function(){
-    console.log("clicked")
     solvePuzzle(board)
     // updateBoard(board)
 }
@@ -79,17 +92,16 @@ var solvePuzzle2 = async (board) =>{
     var index = row*9  + col
 
     for (var i = 1; i < 10; i++ ){
-        changeColor(boxes[index],"red","")
-
+        changeColor(boxes[index],"red",i+"")
+        await sleep(speed)
         // changeColor(boxes[index],"red",i+"")
         // console.log("trying number " + i)
         if (isValid(board,[row,col],i +"")){
             // console.log("Trying number " + i + " at position: " +row + " "+(col))
             changeColor(boxes[index],"green",i+"")
-
             board[row][col] = i+""
             // changeColor(board)
-            await sleep(50)
+            await sleep(speed)
             // console.log(solvePuzzle2(board))
             var solved = await solvePuzzle2(board)
             if ( solved )
@@ -180,3 +192,4 @@ function findSquare(board){
     return null
 }
 
+newBoard()

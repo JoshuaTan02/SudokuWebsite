@@ -19,8 +19,18 @@
       <main role="main" class="container main">
         <div class="starter-template justify-content-center text-center p-3">
             <button class="btn btn-outline-success my-2 my-sm-0 justify-content-center" type="button" id="VisualButton" onclick="solvePuzzle()">Visual</button>
-            <button class="btn btn-outline-primary  justify-content-center" type="button" id="NewBoard" onclick="newBoard()">New Board</button>
             <button class="btn btn-outline-primary  justify-content-center" type="button" id="InstantButton" onclick="instantSolve()">Solve</button>
+
+            <button class="btn btn-outline-info  justify-content-center" type="button" id="NewBoard" onclick="newBoard()">New Board</button>
+            <button class="btn btn-outline-danger  justify-content-center" type="button" id="RefreshButton" onclick="Refresh()">Refresh</button>
+
+            <div class="container justify-content-center text-center mt-3 ">
+              <p class="" id = "speed" >Speed: 100</p>
+             </div>
+
+            <div class="slidecontainer">
+              <input type="range" min="1" max="500" value="100" class="slider" id="myRange">
+            </div>
             <div class="board justify-content-center text-center m-3 p-3 ">
                 <div class="box-row">
                     <div class="row  " id="row0" >
